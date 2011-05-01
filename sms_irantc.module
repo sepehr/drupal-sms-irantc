@@ -276,6 +276,8 @@ function sms_irantc_incoming_access() {
  *
  * @param $type
  *   Type of needed information to get.
+ * @param $format
+ *   Whether to format account credit or not.
  *
  * @return
  *   Either the operation error or results.
@@ -293,7 +295,9 @@ function _sms_irantc_info($type) {
 
       return ($soap_results['status'] === FALSE || is_null($soap_parsed_results)) ?
         t('Could not get the account balance.') :
-        $soap_parsed_results . ' ' . t('IRR.');
+        t('@credit IRR.', array(
+          '@credit' => number_format($soap_parsed_results),
+        ));
 
     case 'received_new_count':
       $soap_params['method'] = SMS_IRANTC_METHOD_NEW;
