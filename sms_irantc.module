@@ -26,6 +26,11 @@ define('SMS_IRANTC_TYPE_SEND', 3);
 define('SMS_IRANTC_TYPE_CREDIT', 4);
 
 /**
+ * Contains Iran.tc default gateway address.
+ */
+define('SMS_IRANTC_DEFAULT_GATEWAY', 'http://iran.tc/WebService/Service.php');
+
+/**
  * Implements hook_menu().
  */
 function sms_irantc_menu() {
@@ -105,7 +110,7 @@ function sms_irantc_admin_form($configuration) {
     '#type' => 'textfield',
     '#title' => t('SOAP Server Endpoint'),
     '#description' => t('Do not change the default, Unless you have a different endpoint in your technical documentation.'),
-    '#default_value' => $configuration['sms_irantc_soap_server'] ? $configuration['sms_irantc_soap_server'] : 'http://iran.tc/WebService/Service.php',
+    '#default_value' => $configuration['sms_irantc_soap_server'] ? $configuration['sms_irantc_soap_server'] : SMS_IRANTC_DEFAULT_GATEWAY,
     '#required' => TRUE,
   );
   // Whether to use line name or the line number:
