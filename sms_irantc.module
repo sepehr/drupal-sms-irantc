@@ -6,11 +6,23 @@
  */
 
 /**
- * Module constants.
+ * Indicates Iran.tc account retrieval method for new messages.
  */
 define('SMS_IRANTC_METHOD_NEW', 1);
+
+/**
+ * Indicates Iran.tc account retrieval method for total messages.
+ */
 define('SMS_IRANTC_METHOD_TOTAL', 2);
+
+/**
+ * Indicates Iran.tc send method type.
+ */
 define('SMS_IRANTC_TYPE_SEND', 3);
+
+/**
+ * Indicates Iran.tc credit method type.
+ */
 define('SMS_IRANTC_TYPE_CREDIT', 4);
 
 /**
