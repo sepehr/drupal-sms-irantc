@@ -68,7 +68,7 @@ function sms_irantc_gateway_info() {
  */
 function sms_irantc_admin_form($configuration) {
   $form = array();
-
+  // Account line number:
   $form['sms_irantc_line'] = array(
     '#type' => 'textfield',
     '#title' => t('Line Number'),
@@ -76,7 +76,7 @@ function sms_irantc_admin_form($configuration) {
     '#default_value' => $configuration['sms_irantc_line'],
     '#required' => TRUE,
   );
-
+  // Account username:
   $form['sms_irantc_username'] = array(
     '#type' => 'textfield',
     '#title' => t('Username'),
@@ -84,7 +84,7 @@ function sms_irantc_admin_form($configuration) {
     '#default_value' => $configuration['sms_irantc_username'],
     '#required' => TRUE,
   );
-
+  // Account password:
   $form['sms_irantc_password'] = array(
     '#type' => 'textfield',
     '#title' => t('Password'),
@@ -93,14 +93,14 @@ function sms_irantc_admin_form($configuration) {
     '#required' => TRUE,
   );
 
-  // Outgoing SMS Settings fieldset.
+  // Outgoing SMS Settings fieldset:
   $form['sms_irantc_outgoing_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Outgoing SMS Settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-
+  // SOAP server endpoint address:
   $form['sms_irantc_outgoing_settings']['sms_irantc_soap_server'] = array(
     '#type' => 'textfield',
     '#title' => t('SOAP Server Endpoint'),
@@ -108,7 +108,7 @@ function sms_irantc_admin_form($configuration) {
     '#default_value' => $configuration['sms_irantc_soap_server'] ? $configuration['sms_irantc_soap_server'] : 'http://iran.tc/WebService/Service.php',
     '#required' => TRUE,
   );
-
+  // Whether to use line name or the line number:
   $form['sms_irantc_outgoing_settings']['sms_irantc_use_line_name'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use the line name instead of its number.'),
@@ -117,18 +117,18 @@ function sms_irantc_admin_form($configuration) {
     '#return_value' => TRUE,
   );
 
-  // If API credentials is already set,
-  // provide more configuration options and account information.
+  // If API credentials is already set, provide
+  // more configuration options and account information.
   if ($configuration['sms_irantc_username'] && $configuration['sms_irantc_password']) {
-    // Incoming SMS Settings fieldset.
+    global $base_root;
+    // Incoming SMS Settings fieldset:
     $form['sms_irantc_incoming_settings'] = array(
       '#type' => 'fieldset',
       '#title' => t('Incoming SMS Settings'),
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );
-
-    global $base_root;
+    // Traffic relay gateway address:
     $form['sms_irantc_incoming_settings']['sms_irantc_receiver'] = array(
       '#type' => 'textfield',
       '#title' => t('Traffic Relay Gateway'),
@@ -137,28 +137,28 @@ function sms_irantc_admin_form($configuration) {
       '#disabled' => TRUE,
     );
 
-    // Account Information fieldset.
+    // Account Information fieldset:
     $form['sms_irantc_info'] = array(
       '#type' => 'fieldset',
       '#title' => t('Account Information'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
     );
-
+    // Account credit:
     $form['sms_irantc_info']['sms_irantc_info_credit'] = array(
       '#type' => 'item',
       '#title' => t('Account Balance'),
       '#description' => t('You Iran.tc SMS balance.'),
       '#value' => _sms_irantc_info('credit'),
     );
-
+    // Sent messages count:
     $form['sms_irantc_info']['sms_irantc_info_sent_count'] = array(
       '#type' => 'item',
       '#title' => t('Sent Count'),
       '#description' => t('The total number of SMS messages sent from your Iran.tc account.'),
       '#value' => _sms_irantc_info('sent_count'),
     );
-
+    // Received messages count:
     $form['sms_irantc_info']['sms_irantc_info_received_count'] = array(
       '#type' => 'item',
       '#title' => t('Received Count'),
@@ -174,16 +174,15 @@ function sms_irantc_admin_form($configuration) {
  * Validation callback for administration form.
  */
 function sms_irantc_admin_form_validate($form, &$form_state) {
+  // Check if the line number is numeric:
   if (!ctype_digit($form_state['values']['sms_irantc_line'])) {
     form_set_error('sms_irantc_line', t('SMS line number needs to be a numeric value.'));
-    return;
   }
-
+  // Check if the SOAP server address is a valid URL:
   if (!valid_url($form_state['values']['sms_irantc_soap_server'], TRUE)) {
     form_set_error('sms_irantc_soap_server', t('SOAP Server Endpoint address needs to be a valid URL.'));
-    return;
   }
-
+  // Warn user if she wants to use the line name instead:
   if ($form_state['values']['sms_irantc_use_line_name']) {
     drupal_set_message(t('You have chosen to use a <em>Line Name</em> instead of your <em>Line Number</em> for outgoing messages. Please make sure that you have a Line Name bundled with your account at <a href="!link">Iran.tc control panel</a> or you get errors.', array('!link' => 'http://iran.tc/')), 'warning');
   }
